@@ -1,6 +1,6 @@
 {
     "name": "silverstripe/iconpicker",
-    "description": "A skeleton for SilverStripe modules.",
+    "description": "An icon picker for SilverStripe CMS.",
     "type": "silverstripe-vendormodule",
     "keywords": [
         "silverstripe",
