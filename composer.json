@@ -1,5 +1,5 @@
 {
-    "name": "silverstripe/colorpicker",
+    "name": "silverstripe/iconpicker",
     "description": "An icon picker for SilverStripe CMS.",
     "type": "silverstripe-vendormodule",
     "keywords": [
