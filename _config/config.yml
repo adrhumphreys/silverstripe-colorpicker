@@ -1,0 +1,8 @@
+---
+Name: iconpickerconfig
+---
+SilverStripe\Admin\LeftAndMain:
+  extra_requirements_css:
+    - "silverstripe/iconpicker:client/dist/styles/bundle.css"
+  extra_requirements_javascript:
+    - "silverstripe/iconpicker:client/dist/js/bundle.js"
