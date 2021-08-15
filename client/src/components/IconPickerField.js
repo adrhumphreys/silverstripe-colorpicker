@@ -1,8 +1,7 @@
 import React, { useState } from "react";
+import classNames from "classnames";
 import { inject } from "lib/Injector";
 import fieldHolder from "components/FieldHolder/FieldHolder";
-
-const Icon = () => {};
 
 // onChange: this.props.onChange(event, { id: this.props.id, value: event.target.value });
 const IconPickerField = (props) => {
@@ -11,45 +10,50 @@ const IconPickerField = (props) => {
     name,
     source,
     onChange = null,
+    setInput = null,
     PopoverOptionSetComponent,
   } = props;
+  console.log(props);
   const [value, setValue] = useState(props.value);
-  const [open, isOpen] = useState(false);
-  const toggleOpen = () => isOpen(!open);
+  const [open, setOpen] = useState(false);
+  const toggleOpen = () => setOpen(!open);
 
-  const handleValueChange = (event) => {
-    const value = event.target.value;
-
+  const handleValueChange = (value) => {
     if (onChange) {
-      onChange(event, { id, value });
+      onChange(null, { id, value });
+    }
+
+    if (setInput) {
+      setInput(name, value);
     }
 
     setValue(value);
   };
 
-  console.log(source);
-  const buttons = source.map(({ title, value }) => {
-    return {
-      content: title,
-      key: value,
-      onClick: (...args) => {
-        console.log(args);
-      },
-    };
+  const mapper = ({ title, value }) => ({
+    content: "",
+    key: value,
+    className: value,
+    onClick: () => handleValueChange(value),
   });
+  const buttons = source.map(mapper);
 
-  console.log(buttons);
-  console.log(props);
   return (
     <div>
+      <button
+        className={classNames("btn btn-outline-secondary", value)}
+        id={`${id}__button`}
+      />
       <PopoverOptionSetComponent
+        disableSearch
+        className=""
         id={id}
         toggleText="Select color"
         buttons={buttons}
-        isOpen={isOpen}
+        isOpen={open}
         toggle={toggleOpen}
+        target={`${id}__button`}
       />
-      <input type="hidden" name={name} value={value} />
     </div>
   );
 };

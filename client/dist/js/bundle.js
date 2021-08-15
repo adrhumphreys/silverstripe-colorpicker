@@ -142,6 +142,10 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _classnames = __webpack_require__(5);
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
 var _Injector = __webpack_require__(0);
 
 var _FieldHolder = __webpack_require__(2);
@@ -150,15 +154,17 @@ var _FieldHolder2 = _interopRequireDefault(_FieldHolder);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Icon = function Icon() {};
-
 var IconPickerField = function IconPickerField(props) {
   var id = props.id,
       name = props.name,
       source = props.source,
       _props$onChange = props.onChange,
       onChange = _props$onChange === undefined ? null : _props$onChange,
+      _props$setInput = props.setInput,
+      setInput = _props$setInput === undefined ? null : _props$setInput,
       PopoverOptionSetComponent = props.PopoverOptionSetComponent;
+
+  console.log(props);
 
   var _useState = (0, _react.useState)(props.value),
       _useState2 = _slicedToArray(_useState, 2),
@@ -168,53 +174,55 @@ var IconPickerField = function IconPickerField(props) {
   var _useState3 = (0, _react.useState)(false),
       _useState4 = _slicedToArray(_useState3, 2),
       open = _useState4[0],
-      isOpen = _useState4[1];
+      setOpen = _useState4[1];
 
   var toggleOpen = function toggleOpen() {
-    return isOpen(!open);
+    return setOpen(!open);
   };
 
-  var handleValueChange = function handleValueChange(event) {
-    var value = event.target.value;
-
+  var handleValueChange = function handleValueChange(value) {
     if (onChange) {
-      onChange(event, { id: id, value: value });
+      onChange(null, { id: id, value: value });
+    }
+
+    if (setInput) {
+      setInput(name, value);
     }
 
     setValue(value);
   };
 
-  console.log(source);
-  var buttons = source.map(function (_ref) {
+  var mapper = function mapper(_ref) {
     var title = _ref.title,
         value = _ref.value;
-
     return {
-      content: title,
+      content: "",
       key: value,
+      className: value,
       onClick: function onClick() {
-        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-          args[_key] = arguments[_key];
-        }
-
-        console.log(args);
+        return handleValueChange(value);
       }
     };
-  });
+  };
+  var buttons = source.map(mapper);
 
-  console.log(buttons);
-  console.log(props);
   return _react2.default.createElement(
     "div",
     null,
+    _react2.default.createElement("button", {
+      className: (0, _classnames2.default)("btn btn-outline-secondary", value),
+      id: id + "__button"
+    }),
     _react2.default.createElement(PopoverOptionSetComponent, {
+      disableSearch: true,
+      className: "",
       id: id,
       toggleText: "Select color",
       buttons: buttons,
-      isOpen: isOpen,
-      toggle: toggleOpen
-    }),
-    _react2.default.createElement("input", { type: "hidden", name: name, value: value })
+      isOpen: open,
+      toggle: toggleOpen,
+      target: id + "__button"
+    })
   );
 };
 
@@ -231,6 +239,8 @@ exports.default = (0, _Injector.inject)(["PopoverOptionSet"], function (PopoverO
 
 "use strict";
 
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _jquery = __webpack_require__(4);
 
@@ -255,7 +265,19 @@ _jquery2.default.entwine("ss", function ($) {
       var IconPickerField = (0, _Injector.loadComponent)("IconPickerField", context);
       var state = this.data("state");
 
-      _reactDom2.default.render(_react2.default.createElement(IconPickerField, state), this[0]);
+      var setValue = function setValue(fieldName, value) {
+        var input = document.querySelector("input[name=\"" + fieldName + "\"]");
+
+        debugger;
+
+        if (!input) {
+          return;
+        }
+
+        input.value = value;
+      };
+
+      _reactDom2.default.render(_react2.default.createElement(IconPickerField, _extends({}, state, { setValue: setValue })), this[0]);
     },
     onunmatch: function onunmatch() {
       _reactDom2.default.unmountComponentAtNode(this[0]);
@@ -297,6 +319,13 @@ module.exports = ReactDom;
 /***/ (function(module, exports) {
 
 module.exports = jQuery;
+
+/***/ }),
+
+/***/ 5:
+/***/ (function(module, exports) {
+
+module.exports = classnames;
 
 /***/ })
 
