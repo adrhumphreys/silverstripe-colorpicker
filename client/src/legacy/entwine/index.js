@@ -10,10 +10,8 @@ jQuery.entwine("ss", ($) => {
       const IconPickerField = loadComponent("IconPickerField", context);
       const state = this.data("state");
 
-      const setValue = (fieldName, value) => {
+      const setInput = (fieldName, value) => {
         const input = document.querySelector(`input[name="${fieldName}"]`);
-
-        debugger;
 
         if (!input) {
           return;
@@ -23,7 +21,7 @@ jQuery.entwine("ss", ($) => {
       };
 
       ReactDOM.render(
-        <IconPickerField {...state} setValue={setValue} />,
+        <IconPickerField {...state} setInput={setInput} />,
         this[0]
       );
     },

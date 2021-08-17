@@ -1,0 +1,22 @@
+.iconpicker-field {
+  align-items: center;
+  background-color: white;
+  display: flex;
+  line-height: 1.1;
+  min-width: 270px;
+  padding-top: 10px;
+  padding-bottom: 8px;
+}
+
+.iconpicker-field__icon {
+  display: block;
+
+  &::before {
+    font-size: 2.1rem;
+    margin-right: .76925rem;
+  }
+}
+
+.iconpicker-field__text {
+  display: block;
+}

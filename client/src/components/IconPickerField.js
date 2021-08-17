@@ -3,7 +3,6 @@ import classNames from "classnames";
 import { inject } from "lib/Injector";
 import fieldHolder from "components/FieldHolder/FieldHolder";
 
-// onChange: this.props.onChange(event, { id: this.props.id, value: event.target.value });
 const IconPickerField = (props) => {
   const {
     id,
@@ -13,7 +12,6 @@ const IconPickerField = (props) => {
     setInput = null,
     PopoverOptionSetComponent,
   } = props;
-  console.log(props);
   const [value, setValue] = useState(props.value);
   const [open, setOpen] = useState(false);
   const toggleOpen = () => setOpen(!open);
@@ -28,25 +26,34 @@ const IconPickerField = (props) => {
     }
 
     setValue(value);
+    setOpen(false);
   };
 
   const mapper = ({ title, value }) => ({
-    content: "",
+    content: title,
     key: value,
     className: value,
     onClick: () => handleValueChange(value),
   });
   const buttons = source.map(mapper);
 
+  let icon = source.find(({ value: val }) => val === value);
+
+  if (!icon) {
+    icon = source[0];
+  }
+
   return (
     <div>
       <button
-        className={classNames("btn btn-outline-secondary", value)}
+        className="btn btn-outline-secondary iconpicker-field"
         id={`${id}__button`}
-      />
+      >
+        <span className={classNames("iconpicker-field__icon", icon.value)} />
+        <span className="iconpicker-field__text">{icon.title}</span>
+      </button>
       <PopoverOptionSetComponent
-        disableSearch
-        className=""
+        className="popover-option-set"
         id={id}
         toggleText="Select color"
         buttons={buttons}
